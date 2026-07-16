@@ -3,6 +3,13 @@ import { getPosts } from "@/services/postServices";
 import { Link } from "react-router-dom";
 export const MyPosts = () => {
   const [posts, setPosts] = React.useState([]);
+  const getCleanContent = (htmlContent) => {
+    if (!htmlContent) return "";
+    // Loại bỏ các thẻ HTML
+    const plainText = htmlContent.replace(/<[^>]*>/g, "");
+    // Cắt lấy 100 ký tự đầu tiên
+    return plainText.length > 100 ? plainText.slice(0, 125) + "..." : plainText;
+  };
   // useEffect call api getPosts using try catch
   React.useEffect(() => {
     const fetchPosts = async () => {
@@ -49,7 +56,7 @@ export const MyPosts = () => {
                     </td>
                     {/* lấy content tầm 100 ký tự */}
                     <td className="border-b border-slate-100 px-4 py-4 align-top dark:border-slate-800">
-                      {item.content.slice(0, 125)}...
+                      {getCleanContent(item.content)}{" "}
                     </td>
                     <td className="border-b border-slate-100 px-4 py-4 align-top dark:border-slate-800">
                       <div className="flex items-center gap-3">

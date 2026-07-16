@@ -20,7 +20,8 @@ export const BlogDetails = () => {
     <div>
       <article className="mx-auto max-w-3xl px-5 pb-12 pt-2 sm:px-6 sm:pt-6">
         <div className="mb-4 text-center text-sm font-semibold text-indigo-600 sm:text-base">
-         Published on <time>{new Date(post.updatedAt).toLocaleDateString()}</time>
+          Published on{" "}
+          <time>{new Date(post.updatedAt).toLocaleDateString()}</time>
         </div>
         <h1 className="mx-auto mb-4 max-w-2xl text-center text-2xl font-semibold leading-snug tracking-normal text-black dark:text-white sm:text-4xl">
           {post.title}
@@ -36,10 +37,9 @@ export const BlogDetails = () => {
           src={post.image}
         />
         <div className="prose-content mx-auto max-w-2xl text-left text-base leading-7 text-black dark:text-slate-100">
-          <p>{post.content}</p>
+          <div dangerouslySetInnerHTML={{ __html: post.content }} />{" "}
         </div>
       </article>
-     
     </div>
   );
 };

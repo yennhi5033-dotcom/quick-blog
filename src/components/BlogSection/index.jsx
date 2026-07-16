@@ -83,7 +83,7 @@ export const BlogSection = ( {posts } ) => {
               </h2>
             </a>
             <p className="line-clamp-3 text-sm leading-6 text-slate-600 dark:text-slate-300">
-              {item.content}
+              <div dangerouslySetInnerHTML={{ __html: item.content }} />
             </p>
           </div>
         </div>
