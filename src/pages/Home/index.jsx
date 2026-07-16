@@ -1,13 +1,29 @@
 import React, { useState, useEffect } from "react";
-import { Header } from "@/components/Header";
 import { HeroSection } from "@/components/HeroSection";
 import { SearchSection } from "@/components/SearchSection";
-import { Footer } from "@/components/Footer";
 import { BlogSection } from "@/components/BlogSection";
+import {getPosts} from "@/services/postServices";
+
 export const Home = () => {
-  const [searchTerm, setSearchTerm] = React.useState("");
-  const [blogPosts, setBlogPosts] = useState([]);
-  const [filteredBlogPosts, setFilteredBlogPosts] = useState([]);
+const [posts, setPosts] = useState([]);
+// useEffect call api getPosts using try catch
+useEffect(() => {
+  const fetchPosts = async () => {
+    try {
+      const data = await getPosts();
+      setPosts(data.items);
+    } catch (error) {
+      console.error("Error fetching posts:", error);
+    }
+  };
+
+  fetchPosts();
+}, []);
+
+  const [searchTerm, setSearchTerm] = useState("");
+const [blogPosts, setBlogPosts] = useState([]);
+const [filteredBlogPosts, setFilteredBlogPosts] = useState([]);
+
   //useState quản lý isDarkMode, mặc định lấy từ localStorage
   const [isDarkMode, setIsDarkMode] = useState(() => {
     const savedMode = localStorage.getItem("darkMode");
@@ -46,28 +62,30 @@ export const Home = () => {
     });
     setFilteredBlogPosts(filtered);
   };
-
+//
+<BlogSection posts={filteredBlogPosts} />;
   return (
     <div
-      className="min-h-screen
-    bg-white dark:bg-slate-900
-    text-gray-900 dark:text-slate-100
-    font-sans
-    transition-colors duration-300"
+     className="flex min-h-screen flex-col bg-white text-slate-950 dark:bg-slate-950 dark:text-slate-50"
     >
-      <Header isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
+      <div className="sticky top-0 z-30 border-b border-transparent bg-white/90 backdrop-blur dark:bg-slate-950/90">
+      </div>
       <div className="flex-1">
         <div className="mx-auto max-w-7xl px-5 pb-10 pt-9 sm:px-6 lg:pt-10">
           <div className="mx-auto max-w-3xl text-center">
             <HeroSection />
-            <SearchSection
+            <SearchSection 
               searchTerm={searchTerm}
               setSearchTerm={setSearchTerm}
               handleSearch={handleSearch}
             />
           </div>
-          <BlogSection  posts={filteredBlogPosts} />
-          <Footer />
+          {/* if posts > 0 */}
+          {posts.length > 0 ? (
+            <BlogSection posts={posts} />
+          ) : (
+            <p>No posts available</p>
+          )}
         </div>
       </div>
     </div>
