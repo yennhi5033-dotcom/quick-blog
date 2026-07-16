@@ -5,6 +5,7 @@ import { Signup } from "./pages/Signup";
 import { BlogDetails } from "./pages/BlogDetails";
 import { MyPosts } from "./pages/MyPosts";
 import { CreateBlog } from "./pages/CreateBlog";
+import { UserManagement } from "./pages/UserManagement";
 import Layout  from "./components/Layout";
 function App() {
 
@@ -20,6 +21,7 @@ function App() {
             />
             <Route path="/posts/:id" element={<Layout><BlogDetails  /></Layout>} />
             <Route path="/myposts" element={<Layout><MyPosts /></Layout>} />
+            <Route path="/users" element={<Layout><UserManagement /></Layout>} />
             <Route path="/login" element={<Login />} />
             <Route path="/create" element={<Layout><CreateBlog /></Layout>} />
 

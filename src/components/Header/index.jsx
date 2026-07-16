@@ -3,15 +3,19 @@ import { Link, useNavigate } from "react-router-dom";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
 export const Header = ({ isDarkMode, toggleDarkMode }) => {
   const [openMenu, setOpenMenu] = React.useState(false);
-const token = localStorage.getItem("token");
-// tao state cho create blog
-const [createBlog, setCreateBlog] = React.useState(false);
+  const currentUser = React.useMemo(() => {
+    try {
+      return JSON.parse(localStorage.getItem("user"));
+    } catch {
+      return null;
+    }
+  }, []);
+  const isAdmin = currentUser?.role === "admin";
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -60,47 +64,6 @@ const [createBlog, setCreateBlog] = React.useState(false);
       <path d="m19.07 4.93-1.41 1.41"></path>
     </svg>
   );
-  const iconMyPosts = (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className="lucide lucide-clipboard-list h-3.5 w-3.5 shrink-0 text-slate-500 dark:text-slate-400"
-      aria-hidden="true"
-    >
-      <rect width="8" height="4" x="8" y="2" rx="1" ry="1" />
-      <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
-      <path d="M12 11h4" />
-      <path d="M12 16h4" />
-      <path d="M8 11h.01" />
-      <path d="M8 16h.01" />
-    </svg>
-  );
-  const iconLogout = (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className="lucide lucide-log-out h-3.5 w-3.5 shrink-0 text-slate-500 dark:text-slate-400"
-      aria-hidden="true"
-    >
-      <path d="m16 17 5-5-5-5"></path>
-      <path d="M21 12H9"></path>
-      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-    </svg>
-  );
   return (
     <div className="sticky top-0 z-30 border-b border-transparent bg-white/90 backdrop-blur dark:bg-slate-950/90">
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-3 sm:h-24 sm:px-6">
@@ -121,7 +84,6 @@ const [createBlog, setCreateBlog] = React.useState(false);
             className="inline-flex items-center justify-center gap-2 whitespace-nowrap transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:pointer-events-none disabled:opacity-60 bg-indigo-600 text-white shadow-sm hover:bg-indigo-700 h-8 rounded-md px-3 text-xs font-bold sm:h-9 sm:text-sm"
             to="/create"
             data-discover="true"
-            onClick={() => setCreateBlog(true)}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -148,87 +110,150 @@ const [createBlog, setCreateBlog] = React.useState(false);
           >
             {isDarkMode ? iconLight : iconDark}
           </button>
-<DropdownMenu>
-  <DropdownMenuTrigger >
-    <button      
-          className="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:pointer-events-none disabled:opacity-60 border border-slate-200 bg-white text-slate-900 shadow-sm hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:hover:bg-slate-900 h-9 w-9 rounded-lg sm:h-11 sm:w-[3.25rem]"
-            aria-label="Open user menu"
-            type="button"
-            id="radix-_r_i_"
-            aria-haspopup="menu"
-            aria-expanded="false"
-            data-state="closed"
-            onClick={() => setOpenMenu(!openMenu)}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="lucide lucide-user h-5 w-5"
-              aria-hidden="true"
-            >
-              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
-              <circle cx="12" cy="7" r="4"></circle>
-            </svg>
-            </button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-   <div className="absolute right-0 mt-2 z-50 w-44 rounded-lg border border-slate-200 bg-white p-1.5 shadow-lg dark:border-slate-800 dark:bg-slate-900">
-
-      <Link
-        to="/myposts"
-        className="flex h-9 items-center gap-3 rounded-md px-2.5 text-sm font-normal text-slate-950 transition hover:bg-slate-50 dark:text-slate-100 dark:hover:bg-slate-800"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-3.5 w-3.5 shrink-0 text-slate-500 dark:text-slate-400"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-        >
-          <rect width="8" height="4" x="8" y="2" rx="1" ry="1" />
-          <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
-          <path d="M12 11h4" />
-          <path d="M12 16h4" />
-          <path d="M8 11h.01" />
-          <path d="M8 16h.01" />
-        </svg>
-
-        My Post
-      </Link>
-
-   <button
-        onClick={handleLogout}
-        className="flex h-9 w-full items-center gap-3 rounded-md px-2.5 text-left text-sm font-normal text-slate-950 transition hover:bg-slate-50 dark:text-slate-100 dark:hover:bg-slate-800"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-3.5 w-3.5 shrink-0 text-slate-500 dark:text-slate-400"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-        >
-          <path d="m16 17 5-5-5-5" />
-          <path d="M21 12H9" />
-          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-        </svg>
-
-        Logout
-      </button>
-
-    </div>
-  </DropdownMenuContent>
-</DropdownMenu>
-        </div>
-      </div>
-      </div>
-  );
-};
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <button
+                className="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:pointer-events-none disabled:opacity-60 border border-slate-200 bg-white text-slate-900 shadow-sm hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:hover:bg-slate-900 h-9 w-9 rounded-lg sm:h-11 sm:w-[3.25rem]"
+                aria-label="Open user menu"
+                type="button"
+                id="radix-_r_i_"
+                aria-haspopup="menu"
+                aria-expanded="false"
+                data-state="closed"
+                onClick={() => setOpenMenu(!openMenu)}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="lucide lucide-user h-5 w-5"
+                  aria-hidden="true"
+                >
+                  <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+              </button>
+            </DropdownMenuTrigger>
+            {/* Nếu có key token trong localStorage => hiển thị My Post và Logout */}
+            {/* Nếu không có key token trong localStorage => hiển thị login và signup */}
+            {localStorage.getItem("token") ? (
+                <DropdownMenuContent>
+              <div className="absolute right-0 mt-2 z-50 w-44 rounded-lg border border-slate-200 bg-white p-1.5 shadow-lg dark:border-slate-800 dark:bg-slate-900">
+                <Link
+                  to="/myposts"
+                  className="flex h-9 items-center gap-3 rounded-md px-2.5 text-sm font-normal text-slate-950 transition hover:bg-slate-50 dark:text-slate-100 dark:hover:bg-slate-800"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-3.5 w-3.5 shrink-0 text-slate-500 dark:text-slate-400"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <rect width="8" height="4" x="8" y="2" rx="1" ry="1" />
+                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+                    <path d="M12 11h4" />
+                    <path d="M12 16h4" />
+                    <path d="M8 11h.01" />
+                    <path d="M8 16h.01" />
+                  </svg>
+                  My Post
+                </Link>
+                {isAdmin && (
+                  <Link
+                    to="/users"
+                    className="flex h-9 items-center gap-3 rounded-md px-2.5 text-sm font-normal text-slate-950 transition hover:bg-slate-50 dark:text-slate-100 dark:hover:bg-slate-800"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-3.5 w-3.5 shrink-0 text-slate-500 dark:text-slate-400"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                    >
+                      <path d="M12 2a3 3 0 0 0-3 3v1H7a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-2V5a3 3 0 0 0-3-3Z" />
+                      <path d="M9 13h6" />
+                      <path d="M12 10v6" />
+                    </svg>
+                    User Management
+                  </Link>
+                )}
+                <button
+                  onClick={handleLogout}
+                  className="flex h-9 w-full items-center gap-3 rounded-md px-2.5 text-left text-sm font-normal text-slate-950 transition hover:bg-slate-50 dark:text-slate-100 dark:hover:bg-slate-800"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-3.5 w-3.5 shrink-0 text-slate-500 dark:text-slate-400"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path d="m16 17 5-5-5-5" />
+                    <path d="M21 12H9" />
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                  </svg>
+                  Logout
+                </button>
+              </div>
+            </DropdownMenuContent>
+            ) : (
+                <DropdownMenuContent>
+              <div className="absolute right-0 mt-2 z-50 w-44 rounded-lg border border-slate-200 bg-white p-1.5 shadow-lg dark:border-slate-800 dark:bg-slate-900">
+                <Link
+                  to="/login"
+                  className="flex h-9 items-center gap-3 rounded-md px-2.5 text-sm font-normal text-slate-950 transition hover:bg-slate-50 dark:text-slate-100 dark:hover:bg-slate-800"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-3.5 w-3.5 shrink-0 text-slate-500 dark:text-slate-400"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <rect width="8" height="4" x="8" y="2" rx="1" ry="1" />
+                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+                    <path d="M12 11h4" />
+                    <path d="M12 16h4" />
+                    <path d="M8 11h.01" />
+                    <path d="M8 16h.01" />
+                  </svg>
+                  Login
+                </Link>
+                <Link to="/signup"
+                  className="flex h-9 w-full items-center gap-3 rounded-md px-2.5 text-left text-sm font-normal text-slate-950 transition hover:bg-slate-50 dark:text-slate-100 dark:hover:bg-slate-800"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-3.5 w-3.5 shrink-0 text-slate-500 dark:text-slate-400"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path d="m16 17 5-5-5-5" />
+                    <path d="M21 12H9" />
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                  </svg>
+                  Signup
+                </Link>
+                
+              </div>
+            </DropdownMenuContent>
+            )
+          }
+          </DropdownMenu>
+          </div>
+   </div>
+   </div>
+)}

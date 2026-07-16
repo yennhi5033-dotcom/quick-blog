@@ -20,3 +20,11 @@ export const getPostById = async (id) => {
     console.log(err);
   }
 };
+export const createPost = async (post) => {
+  const response = await axios.post(API_URL, post);
+  return response.data;
+};
+export const deletePost = async (postId) => {
+  const response = await axios.delete(`${API_URL}/${postId}`);
+  return response.data;
+};
