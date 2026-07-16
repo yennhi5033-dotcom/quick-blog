@@ -77,7 +77,7 @@ export const BlogSection = ( {posts } ) => {
                 {item.tags}
               </span>
             </div>
-            <a href="/posts/6a20fd8d3794982099349ce5" data-discover="true">
+            <a href={`/posts/${item._id}`} data-discover="true">
               <h2 className="mb-3 line-clamp-2 text-lg font-bold text-slate-950 transition hover:text-indigo-600 dark:text-white dark:hover:text-indigo-300">
                 {item.title}
               </h2>
