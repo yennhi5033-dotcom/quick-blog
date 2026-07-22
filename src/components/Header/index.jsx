@@ -7,7 +7,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 export const Header = ({ isDarkMode, toggleDarkMode }) => {
-  const [openMenu, setOpenMenu] = React.useState(false);
   const currentUser = React.useMemo(() => {
     try {
       return JSON.parse(localStorage.getItem("user"));
@@ -111,35 +110,35 @@ export const Header = ({ isDarkMode, toggleDarkMode }) => {
             {isDarkMode ? iconLight : iconDark}
           </button>
           <DropdownMenu>
-            <DropdownMenuTrigger>
-              <button
-                className="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:pointer-events-none disabled:opacity-60 border border-slate-200 bg-white text-slate-900 shadow-sm hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:hover:bg-slate-900 h-9 w-9 rounded-lg sm:h-11 sm:w-[3.25rem]"
-                aria-label="Open user menu"
-                type="button"
-                id="radix-_r_i_"
-                aria-haspopup="menu"
-                aria-expanded="false"
-                data-state="closed"
-                onClick={() => setOpenMenu(!openMenu)}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="lucide lucide-user h-5 w-5"
-                  aria-hidden="true"
+            <DropdownMenuTrigger
+              render={
+                <button
+                  className="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:pointer-events-none disabled:opacity-60 border border-slate-200 bg-white text-slate-900 shadow-sm hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:hover:bg-slate-900 h-9 w-9 rounded-lg sm:h-11 sm:w-[3.25rem]"
+                  aria-label="Open user menu"
+                  type="button"
+                  aria-haspopup="menu"
+                  aria-expanded="false"
+                  data-state="closed"
                 >
-                  <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
-                  <circle cx="12" cy="7" r="4"></circle>
-                </svg>
-              </button>
-            </DropdownMenuTrigger>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="lucide lucide-user h-5 w-5"
+                    aria-hidden="true"
+                  >
+                    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                  </svg>
+                </button>
+              }
+            />
             {/* Nếu có key token trong localStorage => hiển thị My Post và Logout */}
             {/* Nếu không có key token trong localStorage => hiển thị login và signup */}
             {localStorage.getItem("token") ? (
