@@ -14,7 +14,6 @@ export const getPosts = async () => {
 export const getPostById = async (id) => {
   try {
     const res = await axios.get(`${API_URL}/${id}`);
-    if (!res) throw new Error("Failed to fetch post");
     return res.data;
   } catch (err) {
     console.log(err);
