@@ -3,14 +3,36 @@ import {
   Trash2,
   KeyRound,
   UserRound,
+  ChevronDown,
+  Check,
+  Shield,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { deleteUser, getUsers, updateUserRole } from "@/services/authService";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const roleStyles = {
   user: "bg-indigo-100 text-indigo-600",
   admin: "bg-amber-100 text-amber-700",
 };
+
+const roleOptions = [
+  {
+    value: "user",
+    label: "User",
+    icon: UserRound,
+  },
+  {
+    value: "admin",
+    label: "Admin",
+    icon: Shield,
+  },
+];
 
 export const UserManagement = () => {
   const navigate = useNavigate();
@@ -113,9 +135,7 @@ export const UserManagement = () => {
         return;
       }
       const message =
-        err?.response?.data?.message ||
-        err?.message ||
-        "Khong the xoa user.";
+        err?.response?.data?.message || err?.message || "Khong the xoa user.";
       setDeleteError(message);
     } finally {
       setDeleteLoading(false);
@@ -162,15 +182,17 @@ export const UserManagement = () => {
   return (
     <main className="min-h-screen bg-[linear-gradient(180deg,#ffffff_0%,#faf9ff_52%,#f5f7ff_100%)]">
       <section className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-          <h1 className="mb-10 flex items-center justify-center gap-3 text-4xl font-bold text-indigo-600 sm:text-5xl">
-            <span aria-hidden="true">🧩</span>
-            User Management
-          </h1>
+        <h1 className="mb-10 flex items-center justify-center gap-3 text-4xl font-bold text-indigo-600 sm:text-5xl">
+          <span aria-hidden="true">🧩</span>
+          User Management
+        </h1>
         <div className="rounded-[28px] border border-slate-100 bg-white/90 p-4 shadow-[0_24px_60px_rgba(15,23,42,0.06)] backdrop-blur sm:p-6">
           {loading && (
             <div className="grid min-h-[320px] place-items-center rounded-2xl border border-dashed border-slate-200 bg-slate-50 px-6 py-16 text-center">
               <div className="h-10 w-10 animate-spin rounded-full border-2 border-indigo-600 border-t-transparent" />
-              <p className="mt-4 text-sm text-slate-500">Dang tai danh sach user...</p>
+              <p className="mt-4 text-sm text-slate-500">
+                Dang tai danh sach user...
+              </p>
             </div>
           )}
 
@@ -179,7 +201,9 @@ export const UserManagement = () => {
               <div className="grid h-14 w-14 place-items-center rounded-2xl bg-white text-red-500 shadow-sm">
                 <UserRound className="h-6 w-6" />
               </div>
-              <h3 className="mt-4 text-base font-semibold text-slate-900">Load failed</h3>
+              <h3 className="mt-4 text-base font-semibold text-slate-900">
+                Load failed
+              </h3>
               <p className="mt-2 max-w-sm text-sm text-slate-500">{error}</p>
             </div>
           )}
@@ -189,7 +213,9 @@ export const UserManagement = () => {
               <div className="grid h-14 w-14 place-items-center rounded-2xl bg-white text-slate-400 shadow-sm">
                 <UserRound className="h-6 w-6" />
               </div>
-              <h3 className="mt-4 text-base font-semibold text-slate-900">No users found</h3>
+              <h3 className="mt-4 text-base font-semibold text-slate-900">
+                No users found
+              </h3>
               <p className="mt-2 max-w-sm text-sm text-slate-500">
                 Try changing the search keyword or role filter.
               </p>
@@ -219,15 +245,21 @@ export const UserManagement = () => {
                     </thead>
                     <tbody className="divide-y divide-slate-100 bg-white">
                       {users.map((user) => (
-                        <tr key={user._id} className="transition hover:bg-slate-50/80">
+                        <tr
+                          key={user._id}
+                          className="transition hover:bg-slate-50/80"
+                        >
                           <td className="px-6 py-6 text-sm font-semibold text-slate-900">
                             {user.username}
                           </td>
-                          <td className="px-6 py-6 text-sm text-slate-700">{user.email}</td>
+                          <td className="px-6 py-6 text-sm text-slate-700">
+                            {user.email}
+                          </td>
                           <td className="px-6 py-6">
                             <span
                               className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold capitalize ${
-                                roleStyles[user.role] || "bg-slate-100 text-slate-600"
+                                roleStyles[user.role] ||
+                                "bg-slate-100 text-slate-600"
                               }`}
                             >
                               {user.role}
@@ -268,8 +300,12 @@ export const UserManagement = () => {
                   >
                     <div className="flex items-start justify-between gap-4">
                       <div>
-                        <h3 className="text-base font-semibold text-slate-900">{user.username}</h3>
-                        <p className="mt-1 break-all text-sm text-slate-500">{user.email}</p>
+                        <h3 className="text-base font-semibold text-slate-900">
+                          {user.username}
+                        </h3>
+                        <p className="mt-1 break-all text-sm text-slate-500">
+                          {user.email}
+                        </p>
                       </div>
                       <span
                         className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold capitalize ${
@@ -308,10 +344,29 @@ export const UserManagement = () => {
       {deleteTarget && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 px-4 backdrop-blur-sm">
           <div className="w-full max-w-[500px] rounded-2xl bg-white p-6 shadow-[0_24px_80px_rgba(15,23,42,0.24)] sm:p-7">
+            <button
+                type="button"
+                className="absolute right-5 top-5 rounded-md p-1 text-slate-500 transition hover:bg-slate-100 hover:text-slate-900"
+                aria-label="Close"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="22"
+                  height="22"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M18 6 6 18"></path>
+                  <path d="m6 6 12 12"></path>
+                </svg>
+              </button>
             <div className="mb-5 flex items-start gap-4">
-              <div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-rose-50 text-rose-600">
-                <Trash2 className="h-5 w-5" />
-              </div>
+              
               <div className="pt-1">
                 <h3 className="text-xl font-bold tracking-tight text-slate-900">
                   Delete this user?
@@ -320,29 +375,6 @@ export const UserManagement = () => {
                   This user account will be permanently removed.
                 </p>
               </div>
-            </div>
-
-            <div className="rounded-2xl bg-slate-50 p-4">
-              <div className="flex items-center justify-between gap-4">
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
-                    Username
-                  </p>
-                  <p className="mt-1 text-sm font-semibold text-slate-900">
-                    {deleteTarget.username}
-                  </p>
-                </div>
-                <span
-                  className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold capitalize ${
-                    roleStyles[deleteTarget.role] || "bg-slate-100 text-slate-600"
-                  }`}
-                >
-                  {deleteTarget.role}
-                </span>
-              </div>
-              <p className="mt-3 break-all text-sm text-slate-500">
-                {deleteTarget.email}
-              </p>
             </div>
 
             <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
@@ -412,58 +444,69 @@ export const UserManagement = () => {
                 <span className="mb-2 block text-sm font-semibold text-slate-900">
                   Select Role
                 </span>
-                <div className="relative">
-                  <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-500">
-                    <UserRound className="h-5 w-5" />
-                  </span>
-                  <select
-                    value={selectedRole}
-                    onChange={(e) => setSelectedRole(e.target.value)}
-                    className="h-12 w-full appearance-none rounded-xl border border-slate-200 bg-white px-11 pr-10 text-sm text-slate-900 outline-none transition focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100"
-                  >
-                    <option value="user">User</option>
-                    <option value="admin">Admin</option>
-                  </select>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-500"
-                    aria-hidden="true"
-                  >
-                    <path d="m6 9 6 6 6-6" />
-                  </svg>
-                </div>
+                <DropdownMenu>
+                  <DropdownMenuTrigger
+                    render={
+                      <button
+                        type="button"
+                        role="combobox"
+                        aria-controls="radix-*r_s*"
+                        aria-expanded="false"
+                        aria-autocomplete="none"
+                        dir="ltr"
+                        data-state="closed"
+                        className="mt-2 flex h-11 w-full items-center justify-between rounded-md border border-slate-200 bg-white px-3 text-sm text-slate-900 transition hover:bg-slate-50 focus:outline-none focus:ring-4 focus:ring-indigo-100 dark:border-slate-700 dark:bg-slate-950"
+                      >
+                        <span style={{ pointerEvents: "none" }}>
+                          <span className="inline-flex items-center gap-2">
+                            {React.createElement(
+                              roleOptions.find((role) => role.value === selectedRole)?.icon ||
+                                UserRound,
+                              {
+                                className: "h-4 w-4",
+                                "aria-hidden": "true",
+                              },
+                            )}
+                            {roleOptions.find((role) => role.value === selectedRole)?.label ||
+                              "User"}
+                          </span>
+                        </span>
+                        <span aria-hidden="true">
+                          <ChevronDown className="h-4 w-4" />
+                        </span>
+                      </button>
+                    }
+                  />
+                  <DropdownMenuContent>
+                    <div className="mt-2 w-[var(--radix-dropdown-menu-trigger-width)] overflow-hidden rounded-md border border-slate-200 bg-white p-1 shadow-lg dark:border-slate-700 dark:bg-slate-950">
+                      {roleOptions.map((role) => {
+                        const isSelected = selectedRole === role.value;
+
+                        return (
+                          <DropdownMenuItem
+                            key={role.value}
+                            onClick={() => setSelectedRole(role.value)}
+                            className="flex h-9 cursor-pointer items-center justify-between rounded-md px-2.5 text-sm text-slate-900 outline-none transition hover:bg-slate-50 focus:bg-slate-50 dark:text-slate-100 dark:hover:bg-slate-900 dark:focus:bg-slate-900"
+                          >
+                            <span className="inline-flex items-center gap-2">
+                              {React.createElement(role.icon, {
+                                className: "h-4 w-4",
+                                "aria-hidden": "true",
+                              })}
+                              {role.label}
+                            </span>
+                            {isSelected && (
+                              <Check className="h-4 w-4 text-indigo-600" aria-hidden="true" />
+                            )}
+                          </DropdownMenuItem>
+                        );
+                      })}
+                    </div>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </label>
 
-              <div className="rounded-2xl bg-slate-50 p-4">
-                <div className="flex items-center justify-between gap-4">
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
-                      Username
-                    </p>
-                    <p className="mt-1 text-sm font-semibold text-slate-900">
-                      {roleTarget.username}
-                    </p>
-                  </div>
-                  <span
-                    className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold capitalize ${
-                      roleStyles[roleTarget.role] || "bg-slate-100 text-slate-600"
-                    }`}
-                  >
-                    {roleTarget.role}
-                  </span>
-                </div>
-                <p className="mt-3 break-all text-sm text-slate-500">
-                  {roleTarget.email}
-                </p>
-              </div>
+           
             </div>
 
             <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
